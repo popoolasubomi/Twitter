@@ -125,6 +125,9 @@
                                                     <rect key="frame" x="232" y="138" width="30" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" image="favor-icon"/>
+                                                    <connections>
+                                                        <action selector="didTapFavorite:" destination="4pb-yU-Rrb" eventType="touchUpInside" id="1sa-1u-TEs"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i8B-yz-qsc">
                                                     <rect key="frame" x="333" y="142" width="30" height="30"/>
@@ -142,9 +145,11 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="createdAtLabel" destination="5tu-TD-glc" id="ZMg-GG-YgF"/>
+                                            <outlet property="likeButton" destination="ve4-0a-0c9" id="F1m-sq-Nd8"/>
                                             <outlet property="numLikes" destination="ptY-nO-nMR" id="F84-ZQ-PQY"/>
                                             <outlet property="numRetweets" destination="H64-Sq-0AR" id="lLh-nv-uWh"/>
                                             <outlet property="profilePicture" destination="4eD-wF-CTe" id="myr-eR-tqB"/>
+                                            <outlet property="retweetButton" destination="xL6-Bp-ygw" id="9lw-Dv-bk8"/>
                                             <outlet property="screennameLabel" destination="q5l-I4-vlg" id="4y0-QP-EOR"/>
                                             <outlet property="tweetLabel" destination="fLD-xw-EyY" id="ctK-ix-Bgx"/>
                                             <outlet property="usernameLabel" destination="4h3-AV-jQh" id="bry-E5-0QI"/>
@@ -156,14 +161,70 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="ugE-Ul-H9I"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Home Timeline" id="MOc-fV-EZE"/>
+                    <navigationItem key="navigationItem" title="Home Timeline" id="MOc-fV-EZE">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="Cmk-SC-Qd8"/>
+                        <barButtonItem key="rightBarButtonItem" image="edit-icon" id="n3w-Qi-uUi">
+                            <connections>
+                                <segue destination="S3N-fy-D0B" kind="presentation" modalPresentationStyle="fullScreen" id="C4G-OT-GxB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="rs3-tI-ydF" id="ZHj-vU-W1B"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oQh-hN-GQg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1659.4202898550725" y="36.160714285714285"/>
+            <point key="canvasLocation" x="1667" y="37"/>
+        </scene>
+        <!--Compose View Controller-->
+        <scene sceneID="3wW-wO-W7h">
+            <objects>
+                <viewController id="jUA-UC-RB0" customClass="ComposeViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CSm-vd-GN2">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6XW-vH-cDz">
+                                <rect key="frame" x="0.0" y="88" width="414" height="293"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <gestureRecognizers/>
+                        <viewLayoutGuide key="safeArea" id="cSp-QB-A4U"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="o17-uo-w3o" appends="YES" id="0Xg-SR-fFy"/>
+                        </connections>
+                    </view>
+                    <navigationItem key="navigationItem" id="wYT-a9-Smn">
+                        <barButtonItem key="leftBarButtonItem" image="close-icon" id="TUb-kR-M0y">
+                            <connections>
+                                <action selector="closeButton:" destination="jUA-UC-RB0" id="udy-R1-Nck"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Tweet" id="xPW-Vs-Rbi">
+                            <connections>
+                                <action selector="tweetButton:" destination="jUA-UC-RB0" id="UpH-te-Ao3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="textField" destination="6XW-vH-cDz" id="cOY-gs-O96"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CYG-ux-CeE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="o17-uo-w3o">
+                    <connections>
+                        <action selector="onTapScreen:" destination="jUA-UC-RB0" id="w7R-M0-uSa"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="3271.0144927536235" y="36.830357142857139"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WUT-Ke-VeR">
@@ -183,9 +244,29 @@
             </objects>
             <point key="canvasLocation" x="860" y="36.431784107946029"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="juq-y8-Apf">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="S3N-fy-D0B" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1xK-71-0g8">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="jUA-UC-RB0" kind="relationship" relationship="rootViewController" id="PJF-Vu-Vt2"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vAr-Pb-0NY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2444.9275362318845" y="35.491071428571423"/>
+        </scene>
     </scenes>
     <resources>
         <image name="TwitterLogoBlue" width="200" height="200"/>
+        <image name="close-icon" width="26" height="24"/>
+        <image name="edit-icon" width="30" height="27"/>
         <image name="favor-icon" width="30" height="30"/>
         <image name="message-icon" width="30" height="30"/>
         <image name="profile-Icon" width="26" height="26"/>
