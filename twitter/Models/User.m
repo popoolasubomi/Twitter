@@ -15,8 +15,15 @@
     if (self) {
         self.name = dictionary[@"name"];
         self.screenName = dictionary[@"screen_name"];
+        self.profileImageUrl = dictionary[@"profile_image_url_https"];
     }
     return self;
+}
+
+-(NSURL *)getProfileImage{
+    NSString *urlString = [self.profileImageUrl stringByReplacingOccurrencesOfString:@"normal.jpg" withString:@"bigger.jpg"];
+    NSURL *posterUrl = [NSURL URLWithString: urlString];
+    return posterUrl;
 }
 
 @end

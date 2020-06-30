@@ -35,10 +35,9 @@
         self.favorited = [dictionary[@"favorited"] boolValue];
         self.retweetCount = [dictionary[@"retweet_count"] intValue];
         self.retweeted = [dictionary[@"retweeted"] boolValue];
-        
-        //Getting user Info
+   
         NSDictionary *user = dictionary[@"user"];
-        self.user = [[User alloc] initWithDictionary:user];
+        self.user = [[User alloc] initWithDictionary: user];
         NSString *createdAtOriginalString = dictionary[@"created_at"];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"E MMM d HH:mm:ss Z y";
