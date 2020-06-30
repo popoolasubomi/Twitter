@@ -40,6 +40,14 @@
         [self.likeButton setImage:[UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
         [self.likeButton setSelected:NO];
     }
+    
+    if (self.tweet.retweeted) {
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
+        [self.retweetButton setSelected:YES];
+    } else {
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
+        [self.retweetButton setSelected:NO];
+    }
 }
 
 - (IBAction)didTapFavorite:(id)sender {
@@ -71,6 +79,36 @@
             else{
                 NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
                 self.tweet = tweet;
+            }
+        }];
+    }
+}
+
+- (IBAction)didTapRetweet:(id)sender {
+    if (self.tweet.retweeted) {
+        [sender setImage:[UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
+        self.tweet.retweetCount -= 1;
+        self.tweet.retweeted = NO;
+        self.numRetweets.text = [NSString stringWithFormat:@"%d",self.tweet.retweetCount];
+        [[APIManager shared] unRetweet:self.tweet completion:^(Tweet *modifiedTweet, NSError *error) {
+            if(error != nil) {
+                [sender setImage:[UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
+                NSLog(@"Error retweeting tweet: %@", error.localizedDescription);
+            } else {
+                NSLog(@"Successfully unretweeted tweet: %@", self.tweet.text);
+            }
+        }];
+    } else {
+        [sender setImage:[UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
+        self.tweet.retweetCount += 1;
+         self.tweet.retweeted = YES;
+        self.numRetweets.text = [NSString stringWithFormat:@"%d",self.tweet.retweetCount];
+        [[APIManager shared] retweet:self.tweet completion:^(Tweet *modifiedTweet, NSError *error) {
+            if(error != nil) {
+                [sender setImage:[UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
+                NSLog(@"Error unretweeting tweet: %@", error.localizedDescription);
+            } else {
+                 NSLog(@"Successfully unretweeted tweet: %@", self.tweet.text);
             }
         }];
     }
