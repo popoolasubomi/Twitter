@@ -6,6 +6,8 @@
 //  Copyright © 2018 Emerson Malca. All rights reserved.
 //
 
+#import "LoginViewController.h"
+#import "AppDelegate.h"
 #import "TimelineViewController.h"
 #import "TweetCell.h"
 #import "Tweet.h"
@@ -47,6 +49,7 @@
             NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
         }
         [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
     }];
 }
 
@@ -77,5 +80,13 @@
     [self.tableView reloadData];
 }
 
+- (IBAction)didTapLogoutButton:(id)sender {
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    appDelegate.window.rootViewController = loginViewController;
+    [[APIManager shared] logout];
+}
 
 @end
