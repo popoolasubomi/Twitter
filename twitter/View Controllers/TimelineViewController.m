@@ -94,9 +94,15 @@
          UITableViewCell *tappedCell = sender;
          NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
          Tweet *tweet = self.tweetArray[indexPath.row];
-         NSLog(@"%d", self.tweetArray.count);
          detailsPostViewController.tweet = tweet;
      }
-
+     else if ([[segue identifier] isEqualToString:@"replyTweet"]){
+         UINavigationController *navigationController = [segue destinationViewController];
+         ComposeViewController *composeViewController = (ComposeViewController*)navigationController.topViewController;
+         UITableViewCell *tappedCell = sender;
+         NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+         Tweet *tweet = self.tweetArray[indexPath.row];
+         composeViewController.replyTweet = tweet;
+     }
 }
 @end

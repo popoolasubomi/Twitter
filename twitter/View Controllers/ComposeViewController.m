@@ -23,7 +23,16 @@
 }
 
 - (IBAction)tweetButton:(id)sender {
-    [[APIManager shared]postStatusWithText: self.textField.text completion:^(Tweet *tweet, NSError *error) {
+    NSString *tweetText = self.textField.text;
+    if (self.replyTweet) {
+        NSString *repliedToUser = @" @";
+        repliedToUser = [repliedToUser stringByAppendingString:self.replyTweet.user.screenName]; // @mbatilando
+        tweetText = [tweetText stringByAppendingString: repliedToUser];
+    }
+    NSNumberFormatter *myId = [[NSNumberFormatter alloc] init];
+    myId.numberStyle = NSNumberFormatterDecimalStyle;
+    NSNumber *myFinalID = [myId numberFromString:self.replyTweet.idStr];
+    [[APIManager shared]postStatusWithText: tweetText replyID: myFinalID completion:^(Tweet *tweet, NSError *error) {
         if(error) {
             NSLog(@"Error composing Tweet: %@", error.localizedDescription);
         } else {
