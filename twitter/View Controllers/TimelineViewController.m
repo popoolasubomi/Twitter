@@ -15,6 +15,7 @@
 #import "APIManager.h"
 #import "UIImageView+AFNetworking.h"
 #import "ComposeViewController.h"
+#import "DetailViewController.h"
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -69,12 +70,6 @@
     return self.tweetArray.count;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UINavigationController *navigationController = [segue destinationViewController];
-    ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
-    composeController.delegate = self;
-}
-
 - (void)didTweet:(nonnull Tweet *)tweet {
     [self.tweetArray insertObject:tweet atIndex:0];
     [self.tableView reloadData];
@@ -82,11 +77,26 @@
 
 - (IBAction)didTapLogoutButton:(id)sender {
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
     appDelegate.window.rootViewController = loginViewController;
     [[APIManager shared] logout];
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+     if ([[segue identifier] isEqualToString:@"composeTweet"]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+        composeController.delegate = self;
+     }
+     else if ([[segue identifier] isEqualToString:@"detailsViewController"]) {
+         DetailViewController *detailsPostViewController = [segue destinationViewController];
+         UITableViewCell *tappedCell = sender;
+         NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+         Tweet *tweet = self.tweetArray[indexPath.row];
+         NSLog(@"%d", self.tweetArray.count);
+         detailsPostViewController.tweet = tweet;
+     }
+
+}
 @end
