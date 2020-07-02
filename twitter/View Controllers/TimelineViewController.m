@@ -16,6 +16,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "ComposeViewController.h"
 #import "DetailViewController.h"
+#import "ProfileViewController.h"
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -104,5 +105,12 @@
          Tweet *tweet = self.tweetArray[indexPath.row];
          composeViewController.replyTweet = tweet;
      }
+    else if ([[segue identifier] isEqualToString:@"profileSegue1"]){
+        ProfileViewController *profileController = [segue destinationViewController];
+        UITableViewCell *tappedCell = sender;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+        Tweet *tweet = self.tweetArray[indexPath.row];
+        profileController.user = tweet.user;
+    }
 }
 @end

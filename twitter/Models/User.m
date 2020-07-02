@@ -16,14 +16,20 @@
         self.name = dictionary[@"name"];
         self.screenName = dictionary[@"screen_name"];
         self.profileImageUrl = dictionary[@"profile_image_url_https"];
+        self.followerCount = [NSString stringWithFormat: @"%@", dictionary[@"followers_count"]];
+        self.followingCount = [NSString stringWithFormat:@"%@", dictionary[@"friends_count"]];
+        self.profileBannerUrl = dictionary[@"profile_banner_url"];
     }
     return self;
 }
 
 -(NSURL *)getProfileImage{
     NSString *urlString = [self.profileImageUrl stringByReplacingOccurrencesOfString:@"normal.jpg" withString:@"bigger.jpg"];
-    NSURL *posterUrl = [NSURL URLWithString: urlString];
-    return posterUrl;
+    return [NSURL URLWithString: urlString];
+}
+
+-(NSURL *)getBannerImage{
+    return [NSURL URLWithString: self.profileBannerUrl];
 }
 
 @end

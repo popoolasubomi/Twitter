@@ -59,6 +59,29 @@ static NSString * const consumerSecret = @"s5ynGqXzstUZwFPxVyMDkYh197qvHOcVM3kwv
         completion(nil, error);
     }];
 }
+
+- (void)getUserHomeTimelineWithCompletion:(void(^)(User *user, NSArray *tweets, NSError *error))completion {
+    [self GET:@"1.1/statuses/user_timeline.json"
+   parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSArray *  _Nullable tweetDictionaries) {
+       // Manually cache the tweets. If the request fails, restore from cache if possible.
+       NSData *data = [NSKeyedArchiver archivedDataWithRootObject:tweetDictionaries];
+       [[NSUserDefaults standardUserDefaults] setValue:data forKey:@"othertimeline_tweets"];
+       NSMutableArray *tweets  = [Tweet tweetsWithArray:tweetDictionaries];
+       completion(nil, tweets, nil);
+   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+       NSArray *tweetDictionaries = nil;
+       // Fetch tweets from cache if possible
+       NSData *data = [[NSUserDefaults standardUserDefaults] valueForKey:@"othertimeline_tweets"];
+       if (data != nil) {
+           tweetDictionaries = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+           NSMutableArray *tweets  = [Tweet tweetsWithArray:tweetDictionaries];
+           completion(nil, tweets, error);
+       } else {
+           completion(nil, error, nil);
+       }
+   }];
+}
+
 - (void)postStatusWithText:(NSString *)text replyID:(nullable NSNumber *)replyToTweetID completion:(void (^)(Tweet *, NSError *))completion{
     NSString *urlString = @"1.1/statuses/update.json";
     NSDictionary *parameters = [[NSDictionary alloc] init];

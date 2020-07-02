@@ -12,6 +12,8 @@
 		43722F8924A9C20700A46526 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 43722F8824A9C20700A46526 /* Tweet.m */; };
 		4384213324AAEAFE0049B5BB /* ComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4384213224AAEAFE0049B5BB /* ComposeViewController.m */; };
 		4384217A24AD1B280049B5BB /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4384217924AD1B280049B5BB /* DetailViewController.m */; };
+		439755AD24AD4DF000D2780A /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 439755AC24AD4DF000D2780A /* ProfileViewController.m */; };
+		439755B024AD4F2600D2780A /* ProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 439755AF24AD4F2600D2780A /* ProfileViewCell.m */; };
 		557D7B17F5D2B5715B705AA9 /* libPods-twitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6142D6F34C1AE98EE4951 /* libPods-twitter.a */; };
 		6AD278DA20BC4B950085BC29 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD278D920BC4B950085BC29 /* AppDelegate.m */; };
 		6AD278E020BC4B950085BC29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AD278DE20BC4B950085BC29 /* Main.storyboard */; };
@@ -36,6 +38,10 @@
 		4384213224AAEAFE0049B5BB /* ComposeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComposeViewController.m; sourceTree = "<group>"; };
 		4384217824AD1B280049B5BB /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		4384217924AD1B280049B5BB /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		439755AB24AD4DF000D2780A /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		439755AC24AD4DF000D2780A /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		439755AE24AD4F2600D2780A /* ProfileViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewCell.h; sourceTree = "<group>"; };
+		439755AF24AD4F2600D2780A /* ProfileViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewCell.m; sourceTree = "<group>"; };
 		43D6142D6F34C1AE98EE4951 /* libPods-twitter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-twitter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AD278D520BC4B950085BC29 /* twitter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = twitter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AD278D820BC4B950085BC29 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -139,6 +145,8 @@
 			children = (
 				4353BDF424AA89700067EDB9 /* TweetCell.h */,
 				4353BDF524AA89700067EDB9 /* TweetCell.m */,
+				439755AE24AD4F2600D2780A /* ProfileViewCell.h */,
+				439755AF24AD4F2600D2780A /* ProfileViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -154,6 +162,8 @@
 				4384213224AAEAFE0049B5BB /* ComposeViewController.m */,
 				4384217824AD1B280049B5BB /* DetailViewController.h */,
 				4384217924AD1B280049B5BB /* DetailViewController.m */,
+				439755AB24AD4DF000D2780A /* ProfileViewController.h */,
+				439755AC24AD4DF000D2780A /* ProfileViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -279,6 +289,7 @@
 			files = (
 				4353BDF624AA89700067EDB9 /* TweetCell.m in Sources */,
 				6AD278F320BCA6020085BC29 /* BDBOAuth1SessionManager+SFAuthenticationSession.m in Sources */,
+				439755B024AD4F2600D2780A /* ProfileViewCell.m in Sources */,
 				43722F8624A9C14200A46526 /* User.m in Sources */,
 				4384213324AAEAFE0049B5BB /* ComposeViewController.m in Sources */,
 				6AD278E820BC4B970085BC29 /* main.m in Sources */,
@@ -287,6 +298,7 @@
 				4384217A24AD1B280049B5BB /* DetailViewController.m in Sources */,
 				6AD278DA20BC4B950085BC29 /* AppDelegate.m in Sources */,
 				6AD278F620BCB68B0085BC29 /* APIManager.m in Sources */,
+				439755AD24AD4DF000D2780A /* ProfileViewController.m in Sources */,
 				6AD2790920BCC04D0085BC29 /* TimelineViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

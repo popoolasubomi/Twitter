@@ -12,6 +12,7 @@
 #import "User.h"
 #import "APIManager.h"
 #import "ComposeViewController.h"
+#import "ProfileViewController.h"
 
 @interface DetailViewController ()
 
@@ -121,11 +122,21 @@
     }
 }
 
+- (IBAction)onTap:(id)sender {
+    [self.view endEditing:YES];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UINavigationController *navigationController = [segue destinationViewController];
-    ComposeViewController *composeViewController = (ComposeViewController*)navigationController.topViewController;
-    composeViewController.replyTweet = self.tweet;
-    NSLog(@"Working");
+    if ([[segue identifier] isEqualToString:@"replyTweet1"]){
+        UINavigationController *navigationController = [segue destinationViewController];
+        ComposeViewController *composeViewController = (ComposeViewController*)navigationController.topViewController;
+        composeViewController.replyTweet = self.tweet;
+        NSLog(@"Working");
+    }
+    else if ([[segue identifier] isEqualToString:@"profileSegue"]){
+        ProfileViewController *profileController = [segue destinationViewController];
+        profileController.user = self.tweet.user;
+    }
 }
 
 @end
