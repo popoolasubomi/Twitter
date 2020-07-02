@@ -7,7 +7,7 @@
 //
 
 #import "ProfileViewController.h"
-#import "ProfileViewCell.h"
+#import "TweetCell.h"
 #import "APIManager.h"
 #import "Tweet.h"
 #import "User.h"
@@ -39,25 +39,33 @@
 }
 
 -(void) fetchTweets{
-    [[APIManager shared] getUserHomeTimelineWithCompletion:^(User *user, NSArray *tweets, NSError *error) {
+    [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
         if (tweets) {
-            self.tweetArray = (NSMutableArray *) tweets;
+            self.tweetArray = [NSMutableArray new];
+            for (Tweet *tweet in tweets){
+                if (tweet.user.name == self.user.name){
+                    [self.tweetArray addObject: tweet];
+                    NSLog(@"%@", tweet.user.name);
+                }
+            }
             [self.tableView reloadData];
         } else {
             NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
         }
-       [self.refreshControl endRefreshing];
-       [self.tableView reloadData];
+        [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
     }];
 }
 
 -(void) populateView{
-    self.usernameLabel.text = self.user.name;
+    self.usernameLabel.text = [NSString stringWithFormat: @"@%@", self.user.name];
     self.screenLabel.text = self.user.screenName;
     self.numFollowers.text = self.user.followerCount;
     self.numFollowing.text = self.user.followingCount;
     [self.bannerImage setImageWithURL:[self.user getBannerImage]];
     [self.posterIMage setImageWithURL: [self.user getProfileImage]];
+    self.posterIMage.layer.cornerRadius = 40;
+    self.posterIMage.layer.masksToBounds = YES;
 }
 
 - (IBAction)backButton:(id)sender {
@@ -65,15 +73,8 @@
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    ProfileViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileViewCell"];
+    TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     Tweet *tweet = self.tweetArray[indexPath.row];
-    NSLog(@"%@", tweet.createdAtString);
-    cell.tweet = tweet;
-    cell.usernameLabel.text = tweet.user.name;
-    cell.screennameLabel.text = [NSString stringWithFormat:@"@%@", tweet.user.screenName];
-    cell.tweetLabel.text = tweet.text;
-    cell.createdAtLabel.text = tweet.createdAtString;
-    [cell.profileImage setImageWithURL: [tweet.user getProfileImage]];
     [cell refreshData:tweet];
     return cell;
 }

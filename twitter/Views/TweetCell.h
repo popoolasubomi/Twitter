@@ -8,13 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "Tweet.h"
+#import "TweetCell.h"
+#import "User.h"
+#import "TTTAttributedLabel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TweetCell : UITableViewCell
+@protocol TweetCellDelegate;
 
+@interface TweetCell : UITableViewCell <TTTAttributedLabelDelegate>
+
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *tweetLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profilePicture;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *tweetLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numRetweets;
 @property (weak, nonatomic) IBOutlet UILabel *numLikes;
 @property (weak, nonatomic) IBOutlet UILabel *screennameLabel;
@@ -24,7 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) Tweet *tweet;
 -(void)refreshData:(Tweet *)tweet;
+@property (nonatomic, weak) id<TweetCellDelegate> delegate;
 
 @end
+
+@protocol TweetCellDelegate
+- (void)tweetCell:(TweetCell *) tweetCell didTap: (User *)user;
+@end
+
 
 NS_ASSUME_NONNULL_END

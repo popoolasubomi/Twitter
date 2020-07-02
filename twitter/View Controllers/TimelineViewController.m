@@ -18,10 +18,12 @@
 #import "DetailViewController.h"
 #import "ProfileViewController.h"
 
-@interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, TweetCellDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *tweetArray;
 @property(nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic) BOOL isMoreDataLoading;
+@property (nonatomic) int count;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -50,18 +52,26 @@
         } else {
             NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
         }
+        self.isMoreDataLoading = NO;
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     }];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) fetchMoreTweets{
+    [[APIManager shared] getMoreHomeTimeline: self.count completion:^(NSArray *tweets, NSError *error) {
+        if (tweets) {
+            self.tweetArray = (NSMutableArray *) tweets;
+            [self.tableView reloadData];
+        } else {
+            NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
+        }
+    }];
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
+    cell.delegate = self;
     Tweet *tweet = self.tweetArray[indexPath.row];
     [cell refreshData:tweet];
     return cell;
@@ -69,6 +79,19 @@
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.tweetArray.count;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (!self.isMoreDataLoading){
+        int scrollViewContentHeight = self.tableView.contentSize.height;
+        int scrollOffsetThreshold = scrollViewContentHeight - self.tableView.bounds.size.height;
+        if (scrollView.contentOffset.y > scrollOffsetThreshold && self.tableView.isDragging) {
+            self.isMoreDataLoading = YES;
+            self.count += 20;
+            NSLog(@"%d", self.count);
+            [self fetchMoreTweets];
+        }
+    }
 }
 
 - (void)didTweet:(nonnull Tweet *)tweet {
@@ -105,12 +128,17 @@
          Tweet *tweet = self.tweetArray[indexPath.row];
          composeViewController.replyTweet = tweet;
      }
-    else if ([[segue identifier] isEqualToString:@"profileSegue1"]){
+    else if ([[segue identifier] isEqualToString:@"profileSegue2"]){
         ProfileViewController *profileController = [segue destinationViewController];
         UITableViewCell *tappedCell = sender;
         NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
-        Tweet *tweet = self.tweetArray[indexPath.row];
-        profileController.user = tweet.user;
+        Tweet *tweet = tappedCell;
+        profileController.user = sender;
     }
 }
+
+- (void)tweetCell:(nonnull TweetCell *)tweetCell didTap:(nonnull User *)user {
+    [self performSegueWithIdentifier:@"profileSegue2" sender:user];
+}
+
 @end

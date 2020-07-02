@@ -8,16 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "Tweet.h"
+#import "TTTAttributedLabel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <TTTAttributedLabelDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *posterView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *screennameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createdAtLabel;
-@property (weak, nonatomic) IBOutlet UILabel *tweetLabel;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *tweetLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numRetweets;
 @property (weak, nonatomic) IBOutlet UILabel *numLikes;
 

@@ -36,12 +36,20 @@
 -(void) populateViewController{
     self.usernameLabel.text = self.tweet.user.name;
     self.screennameLabel.text = [NSString stringWithFormat:@"@%@", self.tweet.user.screenName];
-    self.tweetLabel.text = self.tweet.text;
     self.numLikes.text = [NSString stringWithFormat:@"%d", self.tweet.favoriteCount];
     self.numRetweets.text = [NSString stringWithFormat:@"%d", self.tweet.retweetCount];
     self.createdAtLabel.text = self.tweet.createdAtString;
     [self.posterView setImageWithURL: [self.tweet.user getProfileImage]];
+    [self updateButton];
     
+    self.tweetLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    self.tweetLabel.delegate = self;
+    NSAttributedString *string = [[NSAttributedString alloc] initWithString:self.tweet.text];
+    self.tweetLabel.attributedText = string;
+    self.tweetLabel.text = self.tweet.text;
+}
+
+- (void) updateButton{
     if (self.tweet.favorited) {
         [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
         [self.favoriteButton setSelected:YES];
@@ -61,7 +69,6 @@
 
 - (IBAction)retweetButton:(id)sender {
     if (self.tweet.retweeted) {
-        [sender setImage:[UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
         self.tweet.retweetCount -= 1;
         self.tweet.retweeted = NO;
         self.numRetweets.text = [NSString stringWithFormat:@"%d",self.tweet.retweetCount];
@@ -74,9 +81,8 @@
             }
         }];
     } else {
-        [sender setImage:[UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
         self.tweet.retweetCount += 1;
-         self.tweet.retweeted = YES;
+        self.tweet.retweeted = YES;
         self.numRetweets.text = [NSString stringWithFormat:@"%d",self.tweet.retweetCount];
         [[APIManager shared] retweet:self.tweet completion:^(Tweet *modifiedTweet, NSError *error) {
             if(error != nil) {
@@ -87,10 +93,11 @@
             }
         }];
     }
+    [self updateButton];
 }
+
 - (IBAction)favoriteButton:(id)sender {
     if (self.tweet.favorited) {
-        [sender setImage:[UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
         self.tweet.favoriteCount -= 1;
         self.tweet.favorited = NO;
         self.numLikes.text = [NSString stringWithFormat:@"%d",self.tweet.favoriteCount];
@@ -108,7 +115,6 @@
         [sender setImage:[UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
         self.tweet.favoriteCount += 1;
         self.tweet.favorited = YES;
-        self.numLikes.text = [NSString stringWithFormat:@"%d",self.tweet.favoriteCount];
         [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
                 [sender setImage:[UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
@@ -120,6 +126,7 @@
             }
         }];
     }
+    [self updateButton];
 }
 
 - (IBAction)onTap:(id)sender {
