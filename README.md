@@ -1,4 +1,4 @@
-# Project 3 - *Name of App Here*
+# Project 3 - *Twitter*
 
 **Twitter** is a basic twitter app to read and compose tweets the [Twitter API](https://apps.twitter.com/).
 
@@ -8,7 +8,7 @@ Time spent: **48** hours spent in total
 
 The following **required** functionality is completed:
 
-- [x ] User sees app icon in home screen and styled launch screen
+- [x] User sees app icon in home screen and styled launch screen
 - [x] User can sign in using OAuth login flow
 - [x] User can Logout
 - [x] User can view last 20 tweets from their home timeline
